@@ -1,9 +1,12 @@
 import * as bcrypt from 'bcrypt';
 import { IPasswordService } from '../../application/interfaces/password-service.interface';
 import { HashedPassword } from '../../application/value-objects/hashed-password';
+import { AuthorizationConfigService } from './authorization-config.service';
 
 export class BcryptPasswordService implements IPasswordService {
-    private readonly SALT_ROUNDS = 10;
+    constructor(
+        private authorizationConfigService: AuthorizationConfigService,
+    ) {}
 
     comparePassword(
         hashedPassword: HashedPassword,
@@ -13,7 +16,10 @@ export class BcryptPasswordService implements IPasswordService {
     }
 
     async hashPassword(plainTextPassword: string): Promise<HashedPassword> {
-        const hash = await bcrypt.hash(plainTextPassword, this.SALT_ROUNDS);
+        const hash = await bcrypt.hash(
+            plainTextPassword,
+            this.authorizationConfigService.hashingSaltRounds,
+        );
         return HashedPassword.create(hash);
     }
 }
