@@ -30,7 +30,7 @@ export class AuthorizationService {
 
     async signUp(email: string, password: string) {
         const authorization = this.authorizationRepository.findByEmail(email);
-        if (!authorization) {
+        if (authorization) {
             return;
         }
 
