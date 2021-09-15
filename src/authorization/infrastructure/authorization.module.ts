@@ -15,6 +15,7 @@ import {
 import { BcryptPasswordService } from './services/bcrypt-password.service';
 import { AuthorizationConfigService } from './services/authorization-config.service';
 import { JwtService } from './services/jwt.service';
+import { strategies } from './strategies';
 
 export interface IAuthorizationOptions extends JwtModuleOptions {
     hashingSaltRounds: number;
@@ -67,15 +68,19 @@ export class AuthorizationModule {
                 },
                 {
                     provide: AuthorizationConfigService,
-                    useFactory: (authorizationConfig: IAuthorizationOptions) =>
-                        new AuthorizationConfigService(
-                            opts.useFactory(
-                                authorizationConfig,
-                            ).hashingSaltRounds,
-                        ),
+                    useFactory: (
+                        authorizationConfig: IAuthorizationOptions,
+                    ) => {
+                        const options = opts.useFactory(authorizationConfig);
+                        return new AuthorizationConfigService(
+                            options.hashingSaltRounds,
+                            options.secret,
+                        );
+                    },
                     inject: opts.inject,
                 },
                 JwtService,
+                ...strategies,
             ],
         };
     }

@@ -41,4 +41,8 @@ export class AuthorizationService {
         const newAuthorization = Authorization.create(email, hashedPassword);
         this.authorizationRepository.save(newAuthorization);
     }
+
+    findAuthorizationByEmail(email: string) {
+        return this.authorizationRepository.findByEmail(email);
+    }
 }
