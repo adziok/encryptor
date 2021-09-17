@@ -16,4 +16,8 @@ export class UniqueID {
 
         return new UniqueID(uuid || v4());
     }
+
+    toString() {
+        return this.#value;
+    }
 }
