@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthorizationModule } from './authorization/infrastructure/authorization.module';
+import { AuthorizationPresentationModule } from './authorization/presentation/authorization-presentation.module';
 
 @Module({
     imports: [
@@ -12,8 +13,7 @@ import { AuthorizationModule } from './authorization/infrastructure/authorizatio
                 },
             }),
         }),
+        AuthorizationPresentationModule,
     ],
-    controllers: [],
-    providers: [],
 })
 export class AppModule {}

@@ -16,6 +16,7 @@ import { BcryptPasswordService } from './services/bcrypt-password.service';
 import { AuthorizationConfigService } from './services/authorization-config.service';
 import { JwtService } from './services/jwt.service';
 import { strategies } from './strategies';
+import { AuthorizationSeeder } from './authorization.seeder';
 
 export interface IAuthorizationOptions extends JwtModuleOptions {
     hashingSaltRounds: number;
@@ -81,7 +82,18 @@ export class AuthorizationModule {
                 },
                 JwtService,
                 ...strategies,
+                AuthorizationSeeder,
             ],
+            exports: [AuthorizationFacade],
+        };
+    }
+
+    register(): DynamicModule {
+        return {
+            module: AuthorizationModule,
+            imports: [],
+            providers: [AuthorizationFacade],
+            exports: [AuthorizationFacade],
         };
     }
 }
