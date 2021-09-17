@@ -2,27 +2,27 @@ import { HashedPassword } from '../value-objects/hashed-password';
 import { UniqueID } from '../../../shared/unique-id';
 
 export class Authorization {
-    #id: UniqueID;
-    #email: string;
-    #password: HashedPassword;
+    private _id: UniqueID;
+    private _email: string;
+    private _password: HashedPassword;
 
     get id() {
-        return this.#id;
+        return this._id;
     }
 
     get email() {
-        return this.#email;
+        return this._email;
     }
 
     get password() {
-        return this.#password;
+        return this._password;
     }
 
     static create(email: string, password: HashedPassword) {
         const authorization = new Authorization();
-        authorization.#id = UniqueID.create();
-        authorization.#email = email;
-        authorization.#password = password;
+        authorization._id = UniqueID.create();
+        authorization._email = email;
+        authorization._password = password;
         return authorization;
     }
 
