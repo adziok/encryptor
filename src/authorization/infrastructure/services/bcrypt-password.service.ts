@@ -2,9 +2,11 @@ import * as bcrypt from 'bcrypt';
 import { IPasswordService } from '../../application/interfaces/password-service.interface';
 import { HashedPassword } from '../../application/value-objects/hashed-password';
 import { AuthorizationConfigService } from './authorization-config.service';
+import { Inject } from '@nestjs/common';
 
 export class BcryptPasswordService implements IPasswordService {
     constructor(
+        @Inject(AuthorizationConfigService)
         private authorizationConfigService: AuthorizationConfigService,
     ) {}
 
