@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AuthorizationModule } from './authorization/infrastructure/authorization.module';
 import { AuthorizationPresentationModule } from './authorization/presentation/authorization-presentation.module';
+import { CryptoModule } from './crypto/infrastructure/crypto.module';
+import { CryptoPresentationModule } from './crypto/presentation/crypto-presentation.module';
 
 @Module({
     imports: [
@@ -14,6 +16,8 @@ import { AuthorizationPresentationModule } from './authorization/presentation/au
             }),
         }),
         AuthorizationPresentationModule,
+        CryptoModule,
+        CryptoPresentationModule,
     ],
 })
 export class AppModule {}
