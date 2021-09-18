@@ -1,4 +1,4 @@
-import { Post } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { CryptoFacade } from '../../infrastructure/crypto.facade';
 import {
     Authenticated,
@@ -7,6 +7,7 @@ import {
 } from '../../../authorization/infrastructure/decorators';
 import { GeneratedKeyPairResponseDto } from '../dtos/generated-key-pair-response.dto';
 
+@Controller()
 export class CryptoController {
     constructor(private cryptoFacade: CryptoFacade) {}
 

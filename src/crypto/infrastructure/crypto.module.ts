@@ -11,6 +11,7 @@ import {
 import { NodeCryptoService } from './services/node-crypto.service';
 import { CryptoIdentityService } from '../application/crypto-identity.service';
 import { EncryptService } from '../application/encrypt.service';
+import { CryptoFacade } from './crypto.facade';
 
 @Module({
     providers: [
@@ -40,6 +41,8 @@ import { EncryptService } from '../application/encrypt.service';
                 new EncryptService(cryptoService),
             inject: [CRYPTO_SERVICE_TOKEN],
         },
+        CryptoFacade,
     ],
+    exports: [CryptoFacade],
 })
 export class CryptoModule {}

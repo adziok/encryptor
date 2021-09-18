@@ -1,6 +1,8 @@
 import { EncryptService } from '../application/encrypt.service';
 import { CryptoIdentityService } from '../application/crypto-identity.service';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class CryptoFacade {
     constructor(
         private encryptService: EncryptService,
