@@ -87,13 +87,4 @@ export class AuthorizationModule {
             exports: [AuthorizationFacade],
         };
     }
-
-    register(): DynamicModule {
-        return {
-            module: AuthorizationModule,
-            imports: [],
-            providers: [AuthorizationFacade],
-            exports: [AuthorizationFacade],
-        };
-    }
 }

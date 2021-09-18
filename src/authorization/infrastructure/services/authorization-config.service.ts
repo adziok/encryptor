@@ -4,6 +4,6 @@ import { Injectable } from '@nestjs/common';
 export class AuthorizationConfigService {
     constructor(
         public hashingSaltRounds: number,
-        private jwtSecret: string | Buffer,
+        public jwtSecret: string | Buffer,
     ) {}
 }

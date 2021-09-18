@@ -1,4 +1,10 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import {
+    Inject,
+    Injectable,
+    InternalServerErrorException,
+    Logger,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
@@ -15,7 +21,7 @@ export class JwtPassportStrategy extends PassportStrategy(Strategy) {
     ) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: configService,
+            secretOrKey: configService.jwtSecret,
             ignoreExpiration: false,
         });
     }

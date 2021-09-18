@@ -4,6 +4,7 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Authorization } from '../../application/entities/authorization';
 
 @Injectable()
 export class HttpJwtStrategy extends AuthGuard('jwt') {
@@ -15,6 +16,6 @@ export class HttpJwtStrategy extends AuthGuard('jwt') {
         if (err || !user) {
             throw err || new UnauthorizedException();
         }
-        return user;
+        return { id: user.id.toString() } as any;
     }
 }
