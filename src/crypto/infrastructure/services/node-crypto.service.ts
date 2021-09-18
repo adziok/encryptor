@@ -21,6 +21,7 @@ export class NodeCryptoService implements ICryptoService {
                         type: 'pkcs8',
                         format: 'pem',
                         cipher: 'aes-256-cbc',
+                        passphrase: Date.now().toString(),
                     },
                 },
                 (err, publicKey, privateKey) => {
