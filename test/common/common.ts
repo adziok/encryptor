@@ -4,6 +4,10 @@ import * as supertest from 'supertest';
 import { AuthorizationModule } from '../../src/authorization/infrastructure/authorization.module';
 import { AuthorizationPresentationModule } from '../../src/authorization/presentation/authorization-presentation.module';
 import { AuthorizationActions } from '../actions/authorization.actions';
+import { CryptoFacade } from '../../src/crypto/infrastructure/crypto.facade';
+import { CryptoModule } from '../../src/crypto/infrastructure/crypto.module';
+import { CryptoPresentationModule } from '../../src/crypto/presentation/crypto-presentation.module';
+import { CryptoActions } from '../actions/crypto.actions';
 
 export const createTestingModule = (metadata: ModuleMetadata = {}) => {
     return Test.createTestingModule({
@@ -21,11 +25,18 @@ export const createTestingAppFromModule = async (
 };
 
 export class RestSession {
+    private agent: supertest.SuperAgentTest;
     authorizationActions: AuthorizationActions;
+    cryptoActions: CryptoActions;
 
     constructor(app: INestApplication) {
-        const agent = supertest.agent(app.getHttpServer());
-        this.authorizationActions = new AuthorizationActions(agent);
+        this.agent = supertest.agent(app.getHttpServer());
+        this.authorizationActions = new AuthorizationActions(this.agent);
+        this.cryptoActions = new CryptoActions(this.agent);
+    }
+
+    setAuthorization(token: string) {
+        this.agent.set('Authorization', 'Bearer ' + token);
     }
 }
 
@@ -36,6 +47,8 @@ export const createTestingApp = async () => {
                 useFactory: () => ({ secret: 'secret', hashingSaltRounds: 1 }),
             }),
             AuthorizationPresentationModule,
+            CryptoModule,
+            CryptoPresentationModule,
         ],
     }).compile();
     const app = await createTestingAppFromModule(module);
