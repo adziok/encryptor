@@ -34,7 +34,7 @@ export class NodeCryptoService implements ICryptoService {
         });
     }
 
-    encryptData(data: Buffer | string, publicKey: string): Buffer {
+    encryptDataRsa(data: Buffer | string, publicKey: string): Buffer {
         const buffer = (data instanceof Buffer && data) || Buffer.from(data);
         return crypto.publicEncrypt(
             {
@@ -44,5 +44,22 @@ export class NodeCryptoService implements ICryptoService {
             },
             buffer,
         );
+    }
+
+    encryptDataAes(data: Buffer, stringKey: string): Buffer {
+        const iv = crypto.randomBytes(16);
+        const secret =
+            NodeCryptoService.generateSha256HashFromString(stringKey);
+        const cipher = crypto.createCipheriv('aes-256-ctr', secret, iv);
+
+        return Buffer.concat([cipher.update(data), cipher.final()]);
+    }
+
+    randomAesKey(): string {
+        return crypto.randomBytes(32).toString();
+    }
+
+    private static generateSha256HashFromString(secret: string): Buffer {
+        return crypto.createHash('sha256').update(secret).digest();
     }
 }

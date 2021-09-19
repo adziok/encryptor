@@ -5,7 +5,15 @@ import { ICryptoService } from './interfaces/crypto-service.interface';
 export class EncryptService {
     constructor(private cryptoService: ICryptoService) {}
 
-    encryptData(data: string | Buffer, publicKey: string) {
-        return this.cryptoService.encryptData(data, publicKey);
+    encryptDataUsingRsa(data: string | Buffer, publicKey: string) {
+        return this.cryptoService.encryptDataRsa(data, publicKey);
+    }
+
+    encryptDataUsingAes(data: Buffer, key: string) {
+        return this.cryptoService.encryptDataAes(data, key);
+    }
+
+    randomAesKey() {
+        return this.cryptoService.randomAesKey();
     }
 }
