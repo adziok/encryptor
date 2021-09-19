@@ -1,6 +1,8 @@
+import { Injectable } from '@nestjs/common';
+import { Transform } from 'stream';
 import { EncryptService } from '../application/encrypt.service';
 import { CryptoIdentityService } from '../application/crypto-identity.service';
-import { Injectable } from '@nestjs/common';
+import { AesEncryptionTransformPipe } from './stream-pipes/aes-encryption-transform.pipe';
 
 @Injectable()
 export class CryptoFacade {
@@ -9,14 +11,26 @@ export class CryptoFacade {
         private cryptoIdentityService: CryptoIdentityService,
     ) {}
 
-    async getEncryptionPipe(
-        userId: string,
-    ): Promise<(data: string | Buffer) => Buffer> {
+    async encryptMessage(userId: string, data: string): Promise<string> {
         const publicKey = await this.cryptoIdentityService.getPublicKeyOrThrow(
             userId,
         );
 
-        return (data) => this.encryptService.encryptData(data, publicKey);
+        return this.encryptService
+            .encryptDataUsingRsa(data, publicKey)
+            .toString('base64');
+    }
+
+    async getAesEncryptionStreamTransformer(): Promise<{
+        transformer: Transform;
+        encryptionKey: string;
+    }> {
+        const encryptionKey = this.encryptService.randomAesKey();
+        const transformer = new AesEncryptionTransformPipe((data) =>
+            this.encryptService.encryptDataUsingAes(data, encryptionKey),
+        );
+
+        return { encryptionKey, transformer };
     }
 
     createKeyPair(userId: string) {
